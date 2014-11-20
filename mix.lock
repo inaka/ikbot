@@ -1,0 +1,5 @@
+%{"exml": {:git, "git://github.com/paulgray/exml.git", "62da8a04dfeb65ed46cb932e73366bf653c1e95d", []},
+  "hedwig": {:git, "git://github.com/scrogson/hedwig.git", "b5af0277c56ac97b8d9fe37c6192b0b648a421eb", []},
+  "httpotion": {:package, "0.2.4"},
+  "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "7871e2ebe8811efb64e1917e2de455fa87e8dfe3", [tag: "v4.1.0"]},
+  "jsx": {:git, "git://github.com/talentdeficit/jsx.git", "4d549dd8a990e282c3d57c5f73213674c05ebf07", []}}

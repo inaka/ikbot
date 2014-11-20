@@ -1,0 +1,39 @@
+use Mix.Config
+config :ikbot,
+  scripts:
+    [
+      "base",
+      "heroku",
+      "github",
+      "xkcd",
+      "devops",
+      "image"
+    ],
+  bing:
+    %{
+      key: '****'
+    }
+
+config :hedwig,
+  clients: [
+    %{
+      jid: "###_###@chat.hipchat.com",
+      password: "****",
+      nickname: "****",
+      resource: "ikbot",
+      config: %{
+        server: "chat.hipchat.com",
+        port: 5222,
+        require_tls?: true,
+        use_compression?: false,
+        use_stream_management?: false,
+        transport: :tcp
+      },
+      rooms: [
+        "###_###@conf.hipchat.com"
+      ],
+      handlers: [
+        {Ikbot.Hipchat, %{}}
+      ]
+    }
+  ]
