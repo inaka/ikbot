@@ -25,6 +25,7 @@ the **** with your information. and also select the scripts that you want to use
 the 'scripts' list.
 
 Example:
+
 *config/config.exs*
 ```
 use Mix.Config
