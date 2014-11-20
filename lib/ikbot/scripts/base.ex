@@ -34,10 +34,6 @@ defmodule Ikbot.Script.Base do
     end
   end
 
-  def say(message) do
-    message.body
-  end
-
   @doc ~S"""
   ## Examples:
 

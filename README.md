@@ -22,9 +22,10 @@ Configuration
 ====
 Copy the content from config/config.exs.template to config/config.exs and replace
 the **** with your information. and also select the scripts that you want to use, updating
-the 'scripts' list
+the 'scripts' list.
 
-config/config.exs:
+Example:
+*config/config.exs*
 ```
 use Mix.Config
 config :ikbot,
@@ -64,7 +65,7 @@ config :hedwig,
 ```
 
 
-Start it
+Run it
 ====
 ```
 $ cd ikbot
