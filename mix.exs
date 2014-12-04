@@ -26,7 +26,8 @@ defmodule Ikbot.Mixfile do
       {:jsx, github: "talentdeficit/jsx"},
       {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.0"},
       {:httpotion, "~> 0.2.0"},
-      {:hedwig, github: "scrogson/hedwig"}
+      {:hedwig, github: "scrogson/hedwig"},
+      {:pong, github: "inaka/pong", branch: "elbrujohalcon.rank", compile: "", app: false}
     ]
   end
 end

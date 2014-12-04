@@ -2,4 +2,5 @@
   "hedwig": {:git, "git://github.com/scrogson/hedwig.git", "b5af0277c56ac97b8d9fe37c6192b0b648a421eb", []},
   "httpotion": {:hex, :httpotion, "0.2.4"},
   "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "7871e2ebe8811efb64e1917e2de455fa87e8dfe3", [tag: "v4.1.0"]},
-  "jsx": {:git, "git://github.com/talentdeficit/jsx.git", "4d549dd8a990e282c3d57c5f73213674c05ebf07", []}}
+  "jsx": {:git, "git://github.com/talentdeficit/jsx.git", "4d549dd8a990e282c3d57c5f73213674c05ebf07", []},
+  "pong": {:git, "git://github.com/inaka/pong.git", "6b6abbbfedf56b570a62f4313488bc05b55ade31", [branch: "elbrujohalcon.rank"]}}
