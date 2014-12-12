@@ -1,4 +1,6 @@
-%{"exml": {:git, "git://github.com/paulgray/exml.git", "62da8a04dfeb65ed46cb932e73366bf653c1e95d", []},
+%{"eredis": {:git, "git://github.com/wooga/eredis.git", "471dd471060daa1d98391cb69ae006f8ba79a042", [ref: "471dd"]},
+  "exml": {:git, "git://github.com/paulgray/exml.git", "62da8a04dfeb65ed46cb932e73366bf653c1e95d", []},
+  "exredis": {:git, "git://github.com/artemeff/exredis.git", "321487f1e747225ff86c5d8af7bb7f3b7a7901d6", [tag: "0.1.0"]},
   "hedwig": {:git, "git://github.com/scrogson/hedwig.git", "b5af0277c56ac97b8d9fe37c6192b0b648a421eb", []},
   "httpotion": {:hex, :httpotion, "0.2.4"},
   "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "7871e2ebe8811efb64e1917e2de455fa87e8dfe3", [tag: "v4.1.0"]},
