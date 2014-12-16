@@ -27,7 +27,8 @@ defmodule Ikbot.Mixfile do
       {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.0"},
       {:httpotion, "~> 0.2.0"},
       {:hedwig, github: "scrogson/hedwig"},
-      {:pong, github: "inaka/pong", branch: "elbrujohalcon.rank", compile: "", app: false}
+      {:pong, github: "inaka/pong", branch: "elbrujohalcon.rank", compile: "", app: false},
+      {:exredis, github: "artemeff/exredis", tag: "0.1.0"}
     ]
   end
 end
