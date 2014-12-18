@@ -1,5 +1,6 @@
 use Mix.Config
 config :ikbot,
+  hipchat_api_token: "****",
   scripts:
     [
       "base",
@@ -12,6 +13,10 @@ config :ikbot,
   bing:
     %{
       key: '****'
+    },
+  pivotal:
+    %{
+      api_token: '****'
     }
 
 config :hedwig,
