@@ -7,10 +7,11 @@ defmodule Ikbot.Task do
     {mod, fun} = get_action(message)
     case Kernel.function_exported?(mod, fun, 1) do
       true ->
-        reply = apply(mod, fun, [to_script_message(message)])
+        reply = apply(mod, fun, [to_script_message(mod, message)])
         {:send_reply, message, reply}
       false ->
-        {:unknown_message, message}
+        reply = "I'm sorry. My responses are limited. You must ask the right questions."
+        {:send_reply, message, reply}
     end
   end
 
@@ -42,16 +43,16 @@ defmodule Ikbot.Task do
     String.to_atom(function)
   end
 
-  defp to_script_message(message) do
-    Map.put(message, :body, clean_body(message.body))
+  defp to_script_message(mod, message) do
+    Map.put(message, :body, clean_body(mod, message.body))
   end
 
-  defp clean_body(body) do
-    new = case String.split(body) do
-      [_valid_mention, _module, _fun | new_body] -> Enum.join(new_body, " ")
+  defp clean_body(mod, body) do
+    case {mod, String.split(body)} do
+      {Ikbot.Script.Base, [_valid_mention, _fun | new_body]} -> Enum.join(new_body, " ")
+      {_, [_valid_mention, _module, _fun | new_body]} -> Enum.join(new_body, " ")
       _ -> ""
     end
-    new
   end
   
 end

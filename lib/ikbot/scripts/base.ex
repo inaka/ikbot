@@ -57,5 +57,25 @@ defmodule Ikbot.Script.Base do
   def help(_message) do
     "Do you need help? not today. (shrug)"
   end
-  
+
+  def thank(message = %{body: body}) do
+    IO.puts "MESSAGE 1"
+    IO.inspect body
+    body = String.strip(body)
+    case body do
+      "you" <> _ -> thanks(%{message | :body => ""})
+      _ -> "that was for me?"
+    end
+  end
+
+  def thanks(%{body: body}) do
+    IO.puts "MESSAGE"
+    IO.inspect body
+    case String.strip(body) do
+      "" -> "you're welcome"
+      "." -> "you're welcome"
+      _ -> "that was for me?"
+    end
+  end
+
 end
