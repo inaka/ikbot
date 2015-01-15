@@ -1,7 +1,7 @@
 defmodule Ikbot.Script.Xkcd do
   alias HTTPotion.Response
 
-  def base _message do
+  def run(_message) do
     case HTTPotion.get("http://xkcd.com/info.0.json", [], []) do
       %Response{body: body, status_code: 200} ->
         body = parse_body(body)

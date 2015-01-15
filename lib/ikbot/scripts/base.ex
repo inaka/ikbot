@@ -1,81 +1,41 @@
 defmodule Ikbot.Script.Base do
-  @doc ~S"""
-  Returns a simple message
+  alias Ikbot.Script.Base
+  alias Ikbot.Script
 
-  ## Examples:
-
-      iex> Ikbot.Script.Base.base %{}
-      "Did someone call me? (try '@ikbot help')"
-
-  """
-  def base(_message) do
-    "Did someone call me? (try '@ikbot help')"
-  end
-
-  @doc ~S"""
-  Receives a map.
-
-  It returns the same message it receives.
-  It returns a special message if the received message is empty.
-
-  ## Examples:
-
-      iex> Ikbot.Script.Base.say %{body: ""}
-      "(wat) tell me something to say"
-
-      iex> Ikbot.Script.Base.say %{body: ""}
-      "this is a test"
-
-  """
-  def say(message) do
-    case String.strip(message.body) do
-      "" -> "(wat) tell me something to say"
-      reply -> reply
+  def run(message) do
+    try do
+      [function | rest] = String.split(message.body)
+      apply(Base, String.to_atom(function), [Enum.join(rest, " ")])
+    rescue
+      MatchError ->
+        "Hi. I'm a bot. try sending 'ikbot help'"
+      UndefinedFunctionError ->
+        "I'm sorry. My responses are limited. You must ask the right questions."
     end
   end
+  
+  def say(""), do: "(wat) tell me something to say"
+  def say(body), do: body
 
-  @doc ~S"""
-  ## Examples:
+  def ping(_body), do: "pong"
 
-      iex> Ikbot.Script.Base.ping %{body: ""}
-      "pong"
-
-  """
-  def ping(_message) do
-    "pong"
+  def help(_body) do
+    scripts = Application.get_env(:ikbot, :scripts, [])
+    enable_scripts =
+      Enum.map_join scripts, "\n", fn script ->
+        name = Script.get_name(script)
+        triggers = Script.get_triggers(script)
+        "* #{String.capitalize(name)} (triggers: #{Enum.join(triggers, ", ")})"
+      end
+    
+    """
+    Do you need help? These are the enabled scripts:
+    #{enable_scripts}
+    """
   end
 
-  @doc ~S"""
-  Returns the application help.
+  def thanks(""), do: "no problem"
 
-  ## Examples:
-
-      iex> Ikbot.Script.Base.help %{body: ""}
-      "Do you need help? not today. (shrug)"
-
-  """
-  def help(_message) do
-    "Do you need help? not today. (shrug)"
-  end
-
-  def thank(message = %{body: body}) do
-    IO.puts "MESSAGE 1"
-    IO.inspect body
-    body = String.strip(body)
-    case body do
-      "you" <> _ -> thanks(%{message | :body => ""})
-      _ -> "that was for me?"
-    end
-  end
-
-  def thanks(%{body: body}) do
-    IO.puts "MESSAGE"
-    IO.inspect body
-    case String.strip(body) do
-      "" -> "you're welcome"
-      "." -> "you're welcome"
-      _ -> "that was for me?"
-    end
-  end
-
+  def thank("you"), do: "you're welcome"
+        
 end

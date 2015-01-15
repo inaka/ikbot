@@ -1,7 +1,7 @@
 defmodule Ikbot.Script.Devops do
   alias HTTPotion.Response
 
-  def base _message do
+  def run(_message) do
     case HTTPotion.get("http://devopsreactions.tumblr.com/random", [], []) do
       %Response{headers: headers, status_code: 302, body: body} ->
         location = headers[:Location]

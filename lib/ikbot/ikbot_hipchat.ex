@@ -1,13 +1,15 @@
 defmodule Ikbot.Hipchat do
   alias Ikbot.Task
   use Hedwig.Handler
-
-  @valid_mentions ["@ikbot", "ikbot"]
-
+  
   def handle_event(%Message{} = message, opts) do
     case has_valid_mention?(message) do
-      false -> :ok
-      true -> Task.process_message(message)
+      true ->
+        message
+        |> wipe_message
+        |> Task.process_message
+      false ->
+        :ok
     end
     {:ok, opts}
   end
@@ -21,20 +23,21 @@ defmodule Ikbot.Hipchat do
     {:ok, opts}
   end
 
-  def handle_info({_from, {:unknown_message, message}}, opts) do
-    IO.puts "unknown_message: #{message.body}"
-    {:ok, opts}
-  end
-
-  def handle_info(msg, opts) do
-    IO.puts "handle_info"
-    IO.inspect msg
+  def handle_info(_msg, opts) do
     {:ok, opts}
   end
 
   defp has_valid_mention?(message) do
     message.body
     |> String.strip
-    |> String.starts_with? @valid_mentions
+    |> String.starts_with? Ikbot.mention
+  end
+
+  def wipe_message(message) do
+    new_body = 
+      message.body
+      |> String.replace(Ikbot.mention, "", global: false)
+      |> String.strip
+    Map.put(message, :body, new_body)
   end
 end

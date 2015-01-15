@@ -1,17 +1,7 @@
 defmodule Ikbot.Script.Daily do
   alias HTTPotion.Response
 
-  @doc ~S"""
-  Returns a funny daily.
-    ## Examples:
-
-      iex> daily = Ikbot.Script.Daily.base %{}
-      ...> "daily: I'm kinda busy. " <> text = daily
-      ...> is_binary(text)
-      :true
-  
-  """
-  def base _message do
+  def run(_message) do
     case HTTPotion.get "http://pages.cs.wisc.edu/~ballard/bofh/excuses", [], [] do
       %Response{body: body, status_code: 200} ->
         dailies = String.split(body, "\n")

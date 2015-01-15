@@ -1,7 +1,8 @@
 defmodule Ikbot.Script.Image do
   alias HTTPotion.Response
 
-  def me %{body: body}  do
+  def run(%{body: body})  do
+    # body = remove_trigger_from_body(body)
     :random.seed(:os.timestamp)
     {:ok, %{key: key}} = :application.get_env(:ikbot, :bing)
     query_string = URI.encode_query([
