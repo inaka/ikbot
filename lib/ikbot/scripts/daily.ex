@@ -18,7 +18,7 @@ defmodule Ikbot.Script.Daily do
         :random.seed(:erlang.now)
         n = :random.uniform(Enum.count(dailies) - 1)
         {:ok, daily} = Enum.fetch(dailies, n)
-        "daily: #{daily}."
+        "daily: I want to finish my tasks, but #{daily}."
       %Response{status_code: status_code} ->
         "Sorry. Something went wrong (code: #{status_code})"
     end
