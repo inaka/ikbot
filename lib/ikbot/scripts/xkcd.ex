@@ -5,7 +5,7 @@ defmodule Ikbot.Script.Xkcd do
     case HTTPotion.get("http://xkcd.com/info.0.json", [], []) do
       %Response{body: body, status_code: 200} ->
         body = parse_body(body)
-        :random.seed(:erlang.now)
+        :random.seed(:os.timestamp())
         num = :random.uniform(body[:num])
         case HTTPotion.get("http://xkcd.com/#{num}/info.0.json", [], []) do
           %Response{body: body, status_code: 200} ->

@@ -1,0 +1,18 @@
+language: erlang
+
+otp_release:
+  - 17.4
+
+sudo: false
+
+env:
+  - ELIXIR_ERL_OPTIONS=""
+  - ELIXIR_ERL_OPTIONS="+T 9"
+
+before_script:
+  - export PATH=`pwd`/elixir/bin:$PATH
+  - mix archive.install http://s3.hex.pm/installs/hex.ez --force
+  - mix deps.get
+  - cp config/config.exs.template config/config.exs
+
+script: "mix compile && mix test"

@@ -1,9 +1,9 @@
 defmodule Ikbot.Script.Pong do
-  def base(message) do
-    ranking(message)
+  def base(_message) do
+    ranking()
   end
 
-  def ranking(message) do
+  def ranking do
     spawn fn ->
       :os.cmd('cd ./deps/pong; ./run.sh')
     end

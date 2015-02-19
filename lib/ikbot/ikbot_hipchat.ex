@@ -4,6 +4,13 @@ defmodule Ikbot.Hipchat do
 
   @valid_mentions ["@ikbot", "ikbot"]
 
+  def init_keepalive do
+    Enum.each Application.get_env(:hedwig, :clients), fn(%{jid: jid}) ->
+      %{event_manager: pid} = jid |> String.to_atom |> Process.whereis |> :sys.get_state
+      GenEvent.notify(pid, :init_keepalive)
+    end
+  end
+
   def handle_event(%Message{} = message, opts) do
     case has_valid_mention?(message) do
       false -> :ok
@@ -12,7 +19,13 @@ defmodule Ikbot.Hipchat do
     {:ok, opts}
   end
 
-  def handle_event(_, opts) do
+  def handle_event(:init_keepalive, opts) do
+    delay = Application.get_env(:ikbot, :keepalive_delay)
+    :erlang.send_after(delay, self, :send_keepalive)
+    {:ok, opts}
+  end
+
+  def handle_event(_event, opts) do
     {:ok, opts}
   end
 
@@ -21,14 +34,19 @@ defmodule Ikbot.Hipchat do
     {:ok, opts}
   end
 
-  def handle_info({_from, {:unknown_message, message}}, opts) do
-    IO.puts "unknown_message: #{message.body}"
+  def handle_info(:send_keepalive, opts) do
+    pid = opts.client.jid |> String.to_atom |> Process.whereis
+    client = Hedwig.Client.client_for(opts.client.jid)
+
+    stanza = Hedwig.Stanza.join(hd(client.rooms), client.nickname)
+    Hedwig.Client.reply(pid, stanza)
+
+    delay = Application.get_env(:ikbot, :keepalive_delay)
+    :erlang.send_after(delay, self, :send_keepalive)
     {:ok, opts}
   end
 
-  def handle_info(msg, opts) do
-    IO.puts "handle_info"
-    IO.inspect msg
+  def handle_info(_msg, opts) do
     {:ok, opts}
   end
 

@@ -5,7 +5,7 @@ defmodule Ikbot.Mixfile do
     [
       app: :ikbot,
       version: "0.0.1",
-      elixir: "1.0.1",
+      elixir: "~>1.0",
       deps: deps
     ]
   end
@@ -24,11 +24,11 @@ defmodule Ikbot.Mixfile do
   defp deps do
     [
       {:jsx, github: "talentdeficit/jsx"},
-      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.0"},
-      {:httpotion, "~> 0.2.0"},
+      {:ibrowse, "~> 4.2"},
+      {:httpotion, "~> 1.0"},
       {:hedwig, github: "scrogson/hedwig"},
       {:pong, github: "inaka/pong", branch: "elbrujohalcon.rank", compile: "", app: false},
-      {:exredis, github: "artemeff/exredis", tag: "0.1.0"}
+      {:exredis, "0.1.0"}
     ]
   end
 end
