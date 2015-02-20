@@ -3,6 +3,7 @@ defmodule Ikbot do
 
   def start(_type, args) do
     load_scripts
+    Ikbot.Hipchat.init_keepalive
     Ikbot.Supervisor.start_link(args)
   end
 

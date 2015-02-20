@@ -1,5 +1,6 @@
 use Mix.Config
 config :ikbot,
+  keepalive_delay: 60000,
   hipchat_api_token: "****",
   scripts:
     [
