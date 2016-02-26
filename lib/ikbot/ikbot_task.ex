@@ -6,11 +6,13 @@ defmodule Ikbot.Task do
   def do_process_message(message) do
     {mod, fun} = get_action(message)
     reply = 
-      case Kernel.function_exported?(mod, fun, 1) do
-        true ->
-          apply(mod, fun, [to_script_message(message)])
-        false ->
-          Ikbot.Script.Image.me(to_searchable_message(message))
+      case {Kernel.function_exported?(mod, fun, 1), mod, fun} do
+        {true, Ikbot.Script.Base, :say} ->
+          apply(mod, fun, [remove_words(message, 2)])
+        {true, _, _} ->
+          apply(mod, fun, [remove_words(message, 3)])
+        {false, _, _} ->
+          Ikbot.Script.Image.me(remove_words(message, 1))
       end
     {:send_reply, message, reply}
   end
@@ -24,7 +26,8 @@ defmodule Ikbot.Task do
     {Ikbot.Script.Base, :base}
   end
 
-  defp get_action([task_name | task_args]) do
+  defp get_action([dirty_task_name | task_args]) do
+    task_name = clean_task_name(dirty_task_name)
     scripts = Application.get_env(:ikbot, :scripts)
     case Enum.member?(scripts, task_name) do
       :false ->
@@ -43,22 +46,20 @@ defmodule Ikbot.Task do
     String.to_atom(function)
   end
 
-  defp to_script_message(message), do: Map.put(message, :body, clean_body(message.body))
-
-  defp to_searchable_message(message), do: Map.put(message, :body, remove_mention(message.body))
-  
-  defp clean_body(body) do
-    case String.split(body) do
-      [_valid_mention, _module, _fun | new_body] -> Enum.join(new_body, " ")
-      _ -> ""
-    end
+  defp remove_words(message, n) do
+    new_body = message.body
+    |> String.split
+    |> nthtail(n)
+    |> Enum.join(" ")
+    Map.put(message, :body, new_body)
   end
 
-  defp remove_mention(body) do
-    body
-    |> String.split
-    |> tl
-    |> Enum.join(" ")
+  defp nthtail([], _), do: []
+  defp nthtail(list, 0), do: list
+  defp nthtail([_head | tail], n), do: nthtail(tail, n - 1)
+
+  defp clean_task_name(task_name) do
+    Regex.replace(~r/(:|\.|,)/, task_name, "")
   end
 
 end
