@@ -23,7 +23,7 @@ defmodule Ikbot.Script.Base do
       iex> Ikbot.Script.Base.say %{body: ""}
       "(wat) tell me something to say"
 
-      iex> Ikbot.Script.Base.say %{body: ""}
+      iex> Ikbot.Script.Base.say %{body: "this is a test"}
       "this is a test"
 
   """
@@ -58,24 +58,8 @@ defmodule Ikbot.Script.Base do
     "Do you need help? not today. (shrug)"
   end
 
-  def thank(message = %{body: body}) do
-    IO.puts "MESSAGE 1"
-    IO.inspect body
-    body = String.strip(body)
-    case body do
-      "you" <> _ -> thanks(%{message | :body => ""})
-      _ -> "that was for me?"
-    end
-  end
-
-  def thanks(%{body: body}) do
-    IO.puts "MESSAGE"
-    IO.inspect body
-    case String.strip(body) do
-      "" -> "you're welcome"
-      "." -> "you're welcome"
-      _ -> "that was for me?"
-    end
+  def notime(_message) do
+    "http://i1.kym-cdn.com/photos/images/newsfeed/000/284/529/e65.gif"
   end
 
 end

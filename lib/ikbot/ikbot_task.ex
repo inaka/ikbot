@@ -5,14 +5,14 @@ defmodule Ikbot.Task do
   
   def do_process_message(message) do
     {mod, fun} = get_action(message)
-    case Kernel.function_exported?(mod, fun, 1) do
-      true ->
-        reply = apply(mod, fun, [to_script_message(mod, message)])
-        {:send_reply, message, reply}
-      false ->
-        reply = "I'm sorry. My responses are limited. You must ask the right questions."
-        {:send_reply, message, reply}
-    end
+    reply = 
+      case Kernel.function_exported?(mod, fun, 1) do
+        true ->
+          apply(mod, fun, [to_script_message(message)])
+        false ->
+          Ikbot.Script.Image.me(to_searchable_message(message))
+      end
+    {:send_reply, message, reply}
   end
 
   defp get_action(message) when is_map(message) do
@@ -43,16 +43,22 @@ defmodule Ikbot.Task do
     String.to_atom(function)
   end
 
-  defp to_script_message(mod, message) do
-    Map.put(message, :body, clean_body(mod, message.body))
-  end
+  defp to_script_message(message), do: Map.put(message, :body, clean_body(message.body))
 
-  defp clean_body(mod, body) do
-    case {mod, String.split(body)} do
-      {Ikbot.Script.Base, [_valid_mention, _fun | new_body]} -> Enum.join(new_body, " ")
-      {_, [_valid_mention, _module, _fun | new_body]} -> Enum.join(new_body, " ")
+  defp to_searchable_message(message), do: Map.put(message, :body, remove_mention(message.body))
+  
+  defp clean_body(body) do
+    case String.split(body) do
+      [_valid_mention, _module, _fun | new_body] -> Enum.join(new_body, " ")
       _ -> ""
     end
   end
-  
+
+  defp remove_mention(body) do
+    body
+    |> String.split
+    |> tl
+    |> Enum.join(" ")
+  end
+
 end
